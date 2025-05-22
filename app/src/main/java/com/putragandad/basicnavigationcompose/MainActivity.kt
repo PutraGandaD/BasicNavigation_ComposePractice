@@ -89,7 +89,7 @@ fun FirstScreen(
             .fillMaxSize()
     ) {
         Text(
-            text = "Hello, its me $name",
+            text = "Hello, $name. It's me.",
             modifier = Modifier
                 .padding(bottom = 8.dp)
         )
