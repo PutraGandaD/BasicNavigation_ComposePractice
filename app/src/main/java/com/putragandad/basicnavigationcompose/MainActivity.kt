@@ -14,19 +14,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import kotlinx.serialization.Serializable
 
 @Serializable
-object FirstScreen
+data class FirstScreen(val name: String)
 
 @Serializable
-object SecondScreen
+data class SecondScreen(val name: String)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,22 +49,27 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    NavHost(navController, startDestination = FirstScreen) {
-        composable<FirstScreen> {
+    NavHost(navController, startDestination = FirstScreen(name = "Android")) {
+        composable<FirstScreen> { backStackEntry ->
+            val firstScreenArgs: FirstScreen = backStackEntry.toRoute()
+
             FirstScreen(
-                name = "Android",
+                name = firstScreenArgs.name,
                 modifier = modifier,
                 onNavigateToSecondScreen = {
-                    navController.navigate(route = SecondScreen)
+                    navController.navigate(route = SecondScreen(name = firstScreenArgs.name))
                 }
             )
         }
 
-        composable<SecondScreen> {
+        composable<SecondScreen> { backStackEntry ->
+            val secondScreenArgs: SecondScreen = backStackEntry.toRoute()
+
             SecondScreen(
+                name = secondScreenArgs.name,
                 modifier = modifier,
                 onNavigateToFirstScreen = {
-                    navController.navigateUp()
+                    navController.popBackStack()
                 }
             )
         }
@@ -98,6 +105,7 @@ fun FirstScreen(
 
 @Composable
 fun SecondScreen(
+    name: String,
     modifier: Modifier = Modifier,
     onNavigateToFirstScreen: () -> Unit
 ) {
@@ -108,7 +116,8 @@ fun SecondScreen(
             .fillMaxSize()
     ) {
         Text(
-            text = "After all these years, would you'd like to meet?",
+            text = "After all these years, would you like to meet me, $name?",
+            textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(bottom = 8.dp)
         )
@@ -135,6 +144,7 @@ fun SecondScreen(
 fun SecondScreenPreview() {
     BasicNavigationComposeTheme {
         SecondScreen(
+            name = "Android",
             onNavigateToFirstScreen = {
 
             }
