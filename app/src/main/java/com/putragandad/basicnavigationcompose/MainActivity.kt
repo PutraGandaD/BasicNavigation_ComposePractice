@@ -14,9 +14,16 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,17 +35,20 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.setValue
 import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import kotlinx.serialization.Serializable
 
-// Serializable for Route and route destination
+// Serializable for normal screen (non bottom navigation bar)
+// for route and route argument
 @Serializable
 data class ArtistDetail(val name: String)
 
 @Serializable
 data class AlbumDetail(val name: String)
 
+// composable screen for bottom nav bar screen
 @Composable
 fun ForYouScreen(modifier: Modifier = Modifier) {
     Box(
@@ -70,7 +80,7 @@ fun LibraryScreen(modifier: Modifier = Modifier) {
 }
 
 // enum for list of bottom nav bar menu
-enum class BottomAppBarDestination(
+enum class BottomNavBarDestination(
     val route: String,
     val label: String,
     val icon: ImageVector,
@@ -81,28 +91,61 @@ enum class BottomAppBarDestination(
     LIBRARY_SCREEN("library", "Library", Icons.Default.Person, "Library")
 }
 
-// main/top hierarchy of navigation, which also responsible for indexing bottom app bar destination
+// main app navigation host, which also responsible for indexing bottom app bar destination
 @Composable
 fun MainAppNavHost(
     navController: NavHostController,
-    startDestination: BottomAppBarDestination,
+    startDestination: BottomNavBarDestination,
     modifier: Modifier = Modifier
 ) {
     NavHost(
         navController,
         startDestination = startDestination.route
     ) {
-        BottomAppBarDestination.entries.forEach { destination ->
+        BottomNavBarDestination.entries.forEach { destination ->
             composable(destination.route) {
                 when(destination) {
-                    BottomAppBarDestination.FOR_YOU_SCREEN -> ForYouScreen()
-                    BottomAppBarDestination.SEARCH_SCREEN -> SearchScreen()
-                    BottomAppBarDestination.LIBRARY_SCREEN -> LibraryScreen()
+                    BottomNavBarDestination.FOR_YOU_SCREEN -> ForYouScreen()
+                    BottomNavBarDestination.SEARCH_SCREEN -> SearchScreen()
+                    BottomNavBarDestination.LIBRARY_SCREEN -> LibraryScreen()
                 }
             }
         }
     }
+}
 
+@Composable
+fun MyApp(modifier: Modifier = Modifier) {
+    val navController = rememberNavController()
+    val startDestination = BottomNavBarDestination.FOR_YOU_SCREEN
+    var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
+
+    Scaffold(
+        modifier = modifier,
+        // configuring bottom nav bar here
+        bottomBar = {
+            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                BottomNavBarDestination.entries.forEachIndexed { index, destination ->
+                    NavigationBarItem(
+                        selected = selectedDestination == index,
+                        onClick = {
+                            navController.navigate(route = destination.route)
+                            selectedDestination = index
+                        },
+                        icon = {
+                            Icon(
+                                destination.icon,
+                                contentDescription = destination.contentDescription
+                            )
+                        },
+                        label = { Text(destination.label) }
+                    )
+                }
+            }
+        }
+    ) { contentPadding ->
+        MainAppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
+    }
 }
 
 @Composable
@@ -166,9 +209,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BasicNavigationComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
-                }
+                MyApp(modifier = Modifier.fillMaxSize())
             }
         }
     }
