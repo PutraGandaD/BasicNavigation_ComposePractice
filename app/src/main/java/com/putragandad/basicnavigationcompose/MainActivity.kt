@@ -37,87 +37,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.setValue
 import androidx.navigation.toRoute
+import com.putragandad.basicnavigationcompose.navigation.AppNavHost
+import com.putragandad.basicnavigationcompose.navigation.TopLevelDestination
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import kotlinx.serialization.Serializable
-
-// Serializable for normal screen (non bottom navigation bar)
-// for route and route argument
-@Serializable
-data class ArtistDetail(val name: String)
-
-@Serializable
-data class AlbumDetail(val name: String)
-
-// composable screen for bottom nav bar screen
-@Composable
-fun ForYouScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(), // inherit from main modifier to fill max size and edge to edge
-        contentAlignment = Alignment.Center
-    ) {
-        Text("For You Screen")
-    }
-}
-
-@Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Search Screen")
-    }
-}
-
-@Composable
-fun LibraryScreen(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("Library Screen")
-    }
-}
-
-// enum for list of bottom nav bar menu
-enum class BottomNavBarDestination(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val contentDescription: String
-) {
-    FOR_YOU_SCREEN("foryou", "For You", Icons.Default.Home, "For You"),
-    SEARCH_SCREEN("search", "Search", Icons.Default.Search, "Search"),
-    LIBRARY_SCREEN("library", "Library", Icons.Default.Person, "Library")
-}
-
-// main app navigation host, which also responsible for indexing bottom app bar destination
-@Composable
-fun MainAppNavHost(
-    navController: NavHostController,
-    startDestination: BottomNavBarDestination,
-    modifier: Modifier = Modifier
-) {
-    NavHost(
-        navController,
-        startDestination = startDestination.route
-    ) {
-        BottomNavBarDestination.entries.forEach { destination ->
-            composable(destination.route) {
-                when(destination) {
-                    BottomNavBarDestination.FOR_YOU_SCREEN -> ForYouScreen()
-                    BottomNavBarDestination.SEARCH_SCREEN -> SearchScreen()
-                    BottomNavBarDestination.LIBRARY_SCREEN -> LibraryScreen()
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-    val startDestination = BottomNavBarDestination.FOR_YOU_SCREEN
+    val startDestination = TopLevelDestination.FOR_YOU_SCREEN
     var selectedDestination by rememberSaveable { mutableIntStateOf(startDestination.ordinal) }
 
     Scaffold(
@@ -125,7 +53,7 @@ fun MyApp(modifier: Modifier = Modifier) {
         // configuring bottom nav bar here
         bottomBar = {
             NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                BottomNavBarDestination.entries.forEachIndexed { index, destination ->
+                TopLevelDestination.entries.forEachIndexed { index, destination ->
                     NavigationBarItem(
                         selected = selectedDestination == index,
                         onClick = {
@@ -144,62 +72,7 @@ fun MyApp(modifier: Modifier = Modifier) {
             }
         }
     ) { contentPadding ->
-        MainAppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
-    }
-}
-
-@Composable
-fun ArtistDetailScreen(
-    name: String,
-    modifier: Modifier = Modifier,
-    onNavigateToSecondScreen: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            text = "Hello, $name. It's me.",
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-        )
-        Button(
-            onClick = {
-                onNavigateToSecondScreen()
-            }
-        ) {
-            Text("I was wondering...")
-        }
-    }
-}
-
-@Composable
-fun AlbumDetailScreen(
-    name: String,
-    modifier: Modifier = Modifier,
-    onNavigateToFirstScreen: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Text(
-            text = "After all these years, would you like to meet me, $name?",
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-        )
-        Button(
-            onClick = {
-                onNavigateToFirstScreen()
-            }
-        ) {
-            Text("No. (Back)")
-        }
+        AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
     }
 }
 
@@ -209,6 +82,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BasicNavigationComposeTheme {
+                // fill max size for the entire app
                 MyApp(modifier = Modifier.fillMaxSize())
             }
         }
