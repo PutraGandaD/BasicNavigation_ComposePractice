@@ -24,6 +24,7 @@ import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import kotlinx.serialization.Serializable
 
+// Serializable for Route and route-arguments
 @Serializable
 data class FirstScreen(val name: String)
 
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
+    val navController = rememberNavController() // single source of truth of navigation
     NavHost(navController, startDestination = FirstScreen(name = "Android")) {
         composable<FirstScreen> { backStackEntry ->
             val firstScreenArgs: FirstScreen = backStackEntry.toRoute()
