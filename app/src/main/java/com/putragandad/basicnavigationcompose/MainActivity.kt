@@ -5,18 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -24,61 +32,81 @@ import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import kotlinx.serialization.Serializable
 
-// Serializable for Route and route-arguments
+// Serializable for Route and route destination
 @Serializable
-data class FirstScreen(val name: String)
+data class ArtistDetail(val name: String)
 
 @Serializable
-data class SecondScreen(val name: String)
+data class AlbumDetail(val name: String)
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            BasicNavigationComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyApp(
-                        modifier = Modifier.padding(innerPadding)
-                    )
+@Composable
+fun ForYouScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(), // inherit from main modifier to fill max size and edge to edge
+        contentAlignment = Alignment.Center
+    ) {
+        Text("For You Screen")
+    }
+}
+
+@Composable
+fun SearchScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("Search Screen")
+    }
+}
+
+@Composable
+fun LibraryScreen(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("Library Screen")
+    }
+}
+
+// enum for list of bottom nav bar menu
+enum class BottomAppBarDestination(
+    val route: String,
+    val label: String,
+    val icon: ImageVector,
+    val contentDescription: String
+) {
+    FOR_YOU_SCREEN("foryou", "For You", Icons.Default.Home, "For You"),
+    SEARCH_SCREEN("search", "Search", Icons.Default.Search, "Search"),
+    LIBRARY_SCREEN("library", "Library", Icons.Default.Person, "Library")
+}
+
+// main/top hierarchy of navigation, which also responsible for indexing bottom app bar destination
+@Composable
+fun MainAppNavHost(
+    navController: NavHostController,
+    startDestination: BottomAppBarDestination,
+    modifier: Modifier = Modifier
+) {
+    NavHost(
+        navController,
+        startDestination = startDestination.route
+    ) {
+        BottomAppBarDestination.entries.forEach { destination ->
+            composable(destination.route) {
+                when(destination) {
+                    BottomAppBarDestination.FOR_YOU_SCREEN -> ForYouScreen()
+                    BottomAppBarDestination.SEARCH_SCREEN -> SearchScreen()
+                    BottomAppBarDestination.LIBRARY_SCREEN -> LibraryScreen()
                 }
             }
         }
     }
+
 }
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier) {
-    val navController = rememberNavController() // single source of truth of navigation
-    NavHost(navController, startDestination = FirstScreen(name = "Android")) {
-        composable<FirstScreen> { backStackEntry ->
-            val firstScreenArgs: FirstScreen = backStackEntry.toRoute()
-
-            FirstScreen(
-                name = firstScreenArgs.name,
-                modifier = modifier,
-                onNavigateToSecondScreen = {
-                    navController.navigate(route = SecondScreen(name = firstScreenArgs.name))
-                }
-            )
-        }
-
-        composable<SecondScreen> { backStackEntry ->
-            val secondScreenArgs: SecondScreen = backStackEntry.toRoute()
-
-            SecondScreen(
-                name = secondScreenArgs.name,
-                modifier = modifier,
-                onNavigateToFirstScreen = {
-                    navController.popBackStack()
-                }
-            )
-        }
-    }
-}
-
-@Composable
-fun FirstScreen(
+fun ArtistDetailScreen(
     name: String,
     modifier: Modifier = Modifier,
     onNavigateToSecondScreen: () -> Unit
@@ -105,7 +133,7 @@ fun FirstScreen(
 }
 
 @Composable
-fun SecondScreen(
+fun AlbumDetailScreen(
     name: String,
     modifier: Modifier = Modifier,
     onNavigateToFirstScreen: () -> Unit
@@ -132,23 +160,25 @@ fun SecondScreen(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun FirstScreenPreview() {
-//    BasicNavigationComposeTheme {
-//        FirstScreen("Android")
-//    }
-//}
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            BasicNavigationComposeTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
+                }
+            }
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
 fun SecondScreenPreview() {
     BasicNavigationComposeTheme {
-        SecondScreen(
-            name = "Android",
-            onNavigateToFirstScreen = {
 
-            }
-        )
     }
 }
