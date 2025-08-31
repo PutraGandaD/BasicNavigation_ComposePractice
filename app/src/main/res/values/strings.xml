@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BasicNavigationCompose</string>
+    <string name="waitlist_description">Fill out the form below to stay up to date and be among the first to access the Compose Beginner Newsletter.</string>
+    <string name="waitlist_agree_terms_condition">I agree to Compose Newsletter Terms and Condition</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.putragandad.basicnavigationcompose.screens.foryou.ForYouScreen
 import com.putragandad.basicnavigationcompose.screens.library.LibraryScreen
 import com.putragandad.basicnavigationcompose.screens.search.SearchScreen
@@ -23,13 +24,11 @@ fun AppNavHost(
         TopLevelDestination.entries.forEach { destination ->
             composable(destination.route) {
                 when(destination) {
-                    TopLevelDestination.FOR_YOU_SCREEN -> ForYouScreen()
-                    TopLevelDestination.SEARCH_SCREEN -> SearchScreen()
-                    TopLevelDestination.LIBRARY_SCREEN -> LibraryScreen()
+                    TopLevelDestination.FOR_YOU_SCREEN -> ForYouScreen(modifier = modifier)
+                    TopLevelDestination.SEARCH_SCREEN -> SearchScreen(modifier = modifier)
+                    TopLevelDestination.LIBRARY_SCREEN -> LibraryScreen(modifier = modifier)
                 }
             }
         }
-
-        // can also declare another route here
     }
 }
