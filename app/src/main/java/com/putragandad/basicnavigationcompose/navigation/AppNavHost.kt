@@ -29,5 +29,7 @@ fun AppNavHost(
                 }
             }
         }
+
+        // can also declare another route here
     }
 }

@@ -6,6 +6,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 
+// this is our Top Level Destination which is Bottom Navigation Bar
+// will convert to Type Safety since using String as a route is not type safety (prone to error)
 enum class TopLevelDestination(
     val route: String,
     val label: String,
