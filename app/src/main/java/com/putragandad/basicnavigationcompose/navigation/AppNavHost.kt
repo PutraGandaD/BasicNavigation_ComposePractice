@@ -19,6 +19,7 @@ fun AppNavHost(
         navController,
         startDestination = startDestination.route
     ) {
+        // declare route for Top Level Destination (in this case is Bottom Navigation Bar integration)
         TopLevelDestination.entries.forEach { destination ->
             composable(destination.route) {
                 when(destination) {
