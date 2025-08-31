@@ -1,5 +1,6 @@
 package com.putragandad.basicnavigationcompose.screens.foryou
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.putragandad.basicnavigationcompose.R
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
+import com.putragandad.basicnavigationcompose.ui.theme.Gray
+import com.putragandad.basicnavigationcompose.ui.theme.PureWhite
 
 // composable screen for bottom nav bar screen
 @Composable
@@ -38,77 +43,95 @@ fun ForYouScreen(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
+            .background(Gray)
     ) {
-        Text(
-            text = "Join Waitlist",
-            textAlign = TextAlign.Center,
-            fontWeight = FontWeight.Bold,
-            fontSize = 24.sp,
-            modifier = Modifier
-                .padding(top = 6.dp)
-                .fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.padding(top = 6.dp))
-        Text(
-            text = stringResource(id = R.string.waitlist_description),
-            textAlign = TextAlign.Center,
-            fontSize = 12.sp,
-            lineHeight = 18.sp,
+        ElevatedCard(
+            colors = CardDefaults.cardColors(
+                containerColor = PureWhite,
+            ),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 2.dp
+            ),
             modifier = Modifier
                 .fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.padding(top = 16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            OutlinedTextField(
-                value = "",
-                placeholder = { Text("First Name") },
-                onValueChange = { },
-                modifier = Modifier.weight(1f)
-            )
-            OutlinedTextField(
-                value = "",
-                placeholder = { Text("Last Name") },
-                onValueChange = { },
-                modifier = Modifier.weight(1f)
-
-            )
-        }
-        OutlinedTextField(
-            value = "",
-            placeholder = { Text("Email") },
-            onValueChange = { },
-            modifier = Modifier
-                .padding(top = 12.dp)
-                .fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.padding(top = 6.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = checkedBox,
-                onCheckedChange = { checkedBox = it }
-            )
-            Text(
-                text = stringResource(id = R.string.waitlist_agree_terms_condition),
-                fontSize = 12.sp,
-                lineHeight = 18.sp,
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
-            )
-        }
-        Spacer(modifier = Modifier.padding(top = 6.dp))
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text("Join the Waitlist")
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "Join Waitlist",
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(top = 6.dp))
+                Text(
+                    text = stringResource(id = R.string.waitlist_description),
+                    textAlign = TextAlign.Center,
+                    fontSize = 12.sp,
+                    lineHeight = 18.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(top = 16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedTextField(
+                        value = "",
+                        placeholder = { Text("First Name") },
+                        onValueChange = { },
+                        modifier = Modifier.weight(1f)
+                    )
+                    OutlinedTextField(
+                        value = "",
+                        placeholder = { Text("Last Name") },
+                        onValueChange = { },
+                        modifier = Modifier.weight(1f)
+
+                    )
+                }
+                OutlinedTextField(
+                    value = "",
+                    placeholder = { Text("Email") },
+                    onValueChange = { },
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(top = 6.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = checkedBox,
+                        onCheckedChange = { checkedBox = it }
+                    )
+                    Text(
+                        text = stringResource(id = R.string.waitlist_agree_terms_condition),
+                        fontSize = 12.sp,
+                        lineHeight = 18.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    )
+                }
+                Spacer(modifier = Modifier.padding(top = 6.dp))
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text("Join the Waitlist")
+                }
+            }
         }
     }
 }
