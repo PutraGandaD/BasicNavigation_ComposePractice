@@ -4,17 +4,47 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.putragandad.basicnavigationcompose.R
+import kotlinx.serialization.Serializable
 
-// this is our Top Level Destination which is Bottom Navigation Bar
-// will convert to Type Safety since using String as a route is not type safety (prone to error)
-enum class TopLevelDestination(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val contentDescription: String
+
+@Serializable data object ForYouGraph
+@Serializable data object SearchGraph
+@Serializable data object LibraryGraph
+
+
+@Serializable
+sealed class TopLevelDestination<T>(
+    val name: String, // the name of the tab
+    val selectedIcon: Int, // filled icon when selected
+    val unselectedIcon: Int, // unfilled icon when not selected
+    val route: T //graphs defined in feature module for each tab
+
 ) {
-    FOR_YOU_SCREEN("foryou", "For You", Icons.Default.Home, "For You"),
-    SEARCH_SCREEN("search", "Search", Icons.Default.Search, "Search"),
-    LIBRARY_SCREEN("library", "Library", Icons.Default.Person, "Library")
+    @Serializable
+    data object ForYou : TopLevelDestination<ForYouGraph>(
+        name = "For You",
+        unselectedIcon = R.drawable.ic_for_you_unselected,
+        selectedIcon = R.drawable.ic_for_you_selected,
+        route = ForYouGraph
+    )
+
+    @Serializable
+    data object Search : TopLevelDestination<SearchGraph>(
+        name = "Search",
+        unselectedIcon = R.drawable.ic_search_24,
+        selectedIcon = R.drawable.ic_search_24,
+        route = SearchGraph
+    )
+
+    @Serializable
+    data object Library : TopLevelDestination<LibraryGraph>(
+        name = "Library",
+        unselectedIcon = R.drawable.ic_library_unselected,
+        selectedIcon = R.drawable.ic_library_selected,
+        route = LibraryGraph
+    )
+
 }

@@ -1,5 +1,6 @@
 package com.putragandad.basicnavigationcompose
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -23,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +39,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -47,49 +51,68 @@ import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeThe
 import kotlinx.serialization.Serializable
 
 @Composable
-fun MyApp(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
-    val startDestination = TopLevelDestination.FOR_YOU_SCREEN
+fun MyApp(
+    modifier: Modifier = Modifier,
+    rootNavController : NavHostController
+) {
+    val currentDestination = rootNavController.currentBackStackEntryAsState().value?.destination
 
+    // set to remember to avoid rebuilt the list when recomposition happened
+    val bottomScreens = remember {
+        listOf(
+            TopLevelDestination.ForYou,
+            TopLevelDestination.Search,
+            TopLevelDestination.Library
+        )
+    }
+
+    // show bottom bar only when current destination is any top-level graph
+    val showBottomBar = bottomScreens.any { screen ->
+        currentDestination?.hierarchy?.any { it.hasRoute(screen.route::class) } == true
+    }
+
+    // using scaffold to ensure edge to edge
     Scaffold(
         modifier = modifier,
         // configuring bottom nav bar here
         bottomBar = {
-            NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                TopLevelDestination.entries.forEachIndexed { index, destination ->
-                    NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { it.route == destination.route } == true,
-                        onClick = {
-                            navController.navigate(destination.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                // on the back stack as users select items
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+            if(showBottomBar) {
+                NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                    bottomScreens.forEach { screen ->
+                        val isSelected =
+                            currentDestination?.hierarchy?.any { it.hasRoute(screen.route::class) } == true
+                        NavigationBarItem(
+                            icon = {
+                                if (isSelected) Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(id = screen.selectedIcon),
+                                    contentDescription = screen.name
+                                )
+                                else Icon(
+                                    modifier = Modifier.size(24.dp),
+                                    painter = painterResource(id = screen.unselectedIcon),
+                                    contentDescription = screen.name
+                                )
+                            },
+                            label = { Text(screen.name) },
+                            selected = isSelected,
+                            onClick = {
+                                rootNavController.navigate(screen.route) {
+                                    popUpTo(rootNavController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                // Avoid multiple copies of the same destination when
-                                // reselecting the same item
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = true
                             }
-                        },
-                        icon = {
-                            Icon(
-                                destination.icon,
-                                contentDescription = destination.contentDescription
-                            )
-                        },
-                        label = { Text(destination.label) }
-                    )
+                        )
+                    }
                 }
             }
         }
     ) { contentPadding ->
         // AppNavHost is our app navigation host, which host all route for our app, including bottom navigation bar
-        AppNavHost(navController, startDestination, modifier = Modifier.padding(contentPadding))
+        AppNavHost(rootNavController, modifier = Modifier.padding(contentPadding))
     }
 }
 
@@ -97,10 +120,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             BasicNavigationComposeTheme {
+                val navController = rememberNavController()
+
                 // fill max size for the entire app
-                MyApp(modifier = Modifier.fillMaxSize())
+                MyApp(
+                    modifier = Modifier.fillMaxSize(),
+                    rootNavController = navController
+                )
             }
         }
     }
@@ -109,7 +138,7 @@ class MainActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun SecondScreenPreview() {
+fun MainActivityPreview() {
     BasicNavigationComposeTheme {
 
     }
