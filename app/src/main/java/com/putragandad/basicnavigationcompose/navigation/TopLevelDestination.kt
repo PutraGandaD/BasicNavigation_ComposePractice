@@ -9,19 +9,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.putragandad.basicnavigationcompose.R
 import kotlinx.serialization.Serializable
 
-
-@Serializable data object ForYouGraph
-@Serializable data object SearchGraph
-@Serializable data object LibraryGraph
-
-
 @Serializable
 sealed class TopLevelDestination<T>(
     val name: String, // the name of the tab
     val selectedIcon: Int, // filled icon when selected
     val unselectedIcon: Int, // unfilled icon when not selected
     val route: T //graphs defined in feature module for each tab
-
 ) {
     @Serializable
     data object ForYou : TopLevelDestination<ForYouGraph>(

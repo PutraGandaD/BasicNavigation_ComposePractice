@@ -112,7 +112,10 @@ fun MyApp(
         }
     ) { contentPadding ->
         // AppNavHost is our app navigation host, which host all route for our app, including bottom navigation bar
-        AppNavHost(rootNavController, modifier = Modifier.padding(contentPadding))
+        AppNavHost(
+            rootNavController = rootNavController,
+            modifier = Modifier.padding(contentPadding)
+        )
     }
 }
 

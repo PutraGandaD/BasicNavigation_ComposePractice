@@ -14,21 +14,6 @@ import com.putragandad.basicnavigationcompose.screens.toplevel.search.SearchScre
 import kotlinx.serialization.Serializable
 import java.io.Serial
 
-@Serializable data object TopLevelGraph
-
-// serializable used for Type-safe navigation
-// serializable for Authentication Route (which is nested)
-@Serializable data object AuthBaseGraph
-
-// serializable for Route(child) inside Authentication Graph(parent/base)
-@Serializable data object LoginRoute
-@Serializable data object RegisterRoute
-
-// serializable for Route(child) inside nested Top Level Destination graph
-@Serializable data object ForYouRoute
-@Serializable data object SearchRoute
-@Serializable data object LibraryRoute
-
 @Composable
 fun AppNavHost(
     rootNavController: NavHostController,
