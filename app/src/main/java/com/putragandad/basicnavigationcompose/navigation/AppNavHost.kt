@@ -2,6 +2,7 @@ package com.putragandad.basicnavigationcompose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,6 +10,7 @@ import androidx.navigation.navigation
 import com.putragandad.basicnavigationcompose.screens.auth.login.LoginScreen
 import com.putragandad.basicnavigationcompose.screens.auth.register.RegisterScreen
 import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.ForYouScreen
+import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.ForYouViewModel
 import com.putragandad.basicnavigationcompose.screens.toplevel.library.LibraryScreen
 import com.putragandad.basicnavigationcompose.screens.toplevel.search.SearchScreen
 import kotlinx.serialization.Serializable
@@ -25,8 +27,13 @@ fun AppNavHost(
         startDestination = ForYouGraph // and then set it here
     ) {
         navigation<ForYouGraph>(startDestination = ForYouRoute) {
-            composable<ForYouRoute> {
-                ForYouScreen(modifier = modifier)
+            composable<ForYouRoute> { backStackEntry ->
+                // create viewmodel for this current backstackentry
+                val viewModel = hiltViewModel<ForYouViewModel>()
+                ForYouScreen(
+                    modifier = modifier,
+                    viewModel = viewModel
+                )
             }
         }
 

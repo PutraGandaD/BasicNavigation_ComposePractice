@@ -29,13 +29,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.putragandad.basicnavigationcompose.R
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import com.putragandad.basicnavigationcompose.ui.theme.PureWhite
 
 // composable screen for bottom nav bar screen
 @Composable
-fun ForYouScreen(modifier: Modifier = Modifier) {
+fun ForYouScreen(
+    modifier: Modifier = Modifier,
+    viewModel: ForYouViewModel = viewModel()
+) {
     var checkedBox by remember { mutableStateOf(false) }
 
     Column(
