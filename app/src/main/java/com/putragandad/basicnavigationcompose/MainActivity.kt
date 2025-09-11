@@ -48,6 +48,7 @@ import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.navigation.AppNavHost
 import com.putragandad.basicnavigationcompose.navigation.TopLevelDestination
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -119,6 +120,7 @@ fun MyApp(
     }
 }
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
