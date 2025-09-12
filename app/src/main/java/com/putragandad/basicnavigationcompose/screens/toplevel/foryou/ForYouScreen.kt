@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.putragandad.basicnavigationcompose.R
+import com.putragandad.basicnavigationcompose.screens.model.TourismListItem
 import com.putragandad.basicnavigationcompose.ui.component.SearchList
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import com.putragandad.basicnavigationcompose.ui.theme.PureWhite
@@ -61,40 +62,42 @@ fun ForYouScreen(
     modifier: Modifier = Modifier,
     uiState: ForYouUiState
 ) {
-    when(uiState) {
-        is ForYouUiState.Loading -> {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        when(uiState) {
+            is ForYouUiState.Loading -> {
 
-        }
+            }
 
-        is ForYouUiState.Success -> {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
+            is ForYouUiState.Success -> {
                 uiState.data?.let { tourismPlace ->
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(14.dp)
-                    ) {
-                        items(tourismPlace, key = { it.id }) { item ->
-                            Text(
-                                item.name
-                            )
-                        }
-                    }
+                    TourismPlaceList(tourismPlace)
                 }
             }
-        }
 
-        is ForYouUiState.Error -> {
-            val message = uiState.message
+            is ForYouUiState.Error -> {
+                val message = uiState.message
+            }
         }
     }
 }
 
 @Composable
-fun TourismPlaceList() {
-
+fun TourismPlaceList(
+    list: List<TourismListItem>
+) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        items(list, key = { it.id }) { item ->
+            Text(
+                item.name
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)
