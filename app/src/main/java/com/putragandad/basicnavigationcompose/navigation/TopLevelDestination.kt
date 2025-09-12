@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.putragandad.basicnavigationcompose.R
+import com.putragandad.basicnavigationcompose.feature.foryou.ForYouGraph
 import kotlinx.serialization.Serializable
 
 @Serializable

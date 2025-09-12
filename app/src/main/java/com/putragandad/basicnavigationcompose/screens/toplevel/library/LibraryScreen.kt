@@ -50,7 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.putragandad.basicnavigationcompose.R
-import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
+import com.putragandad.basicnavigationcompose.core.ui.theme.BasicNavigationComposeTheme
 
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier) {

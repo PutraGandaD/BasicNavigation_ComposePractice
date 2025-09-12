@@ -45,9 +45,9 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.toRoute
+import com.putragandad.basicnavigationcompose.core.ui.theme.BasicNavigationComposeTheme
 import com.putragandad.basicnavigationcompose.navigation.AppNavHost
 import com.putragandad.basicnavigationcompose.navigation.TopLevelDestination
-import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 

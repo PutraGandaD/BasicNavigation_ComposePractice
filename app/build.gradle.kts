@@ -45,6 +45,7 @@ android {
 dependencies {
     implementation(project(":core:data"))
     implementation(project(":core:ui"))
+    implementation(project(":core:utils"))
 
     implementation(project(":feature:foryou"))
     implementation(project(":feature:search"))

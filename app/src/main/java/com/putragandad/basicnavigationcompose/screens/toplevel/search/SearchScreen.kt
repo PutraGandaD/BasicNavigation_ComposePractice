@@ -12,9 +12,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.putragandad.basicnavigationcompose.R
-import com.putragandad.basicnavigationcompose.ui.component.SearchList
-import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
-import com.putragandad.basicnavigationcompose.utils.DummyList
+import com.putragandad.basicnavigationcompose.core.ui.component.SearchList
+import com.putragandad.basicnavigationcompose.core.ui.theme.BasicNavigationComposeTheme
+import com.putragandad.basicnavigationcompose.core.utils.dummylist.DummyList
 
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier) {

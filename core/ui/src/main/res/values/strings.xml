@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">BasicNavigationCompose</string>
+
+    <string name="waitlist_description">Fill out the form below to stay up to date and be among the first to access the Compose Beginner Newsletter.</string>
+    <string name="waitlist_agree_terms_condition">I agree to Compose Newsletter Terms and Condition</string>
+
+    <string name="login_header_title">Login</string>
+    <string name="login_header_description">Log in to your account now to access your Library.</string>
+
+    <string name="remember_me_checkbox_label">Remember Me</string>
 </resources>

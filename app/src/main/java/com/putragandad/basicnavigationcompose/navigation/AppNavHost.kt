@@ -8,10 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.putragandad.basicnavigationcompose.feature.foryou.ForYouGraph
+import com.putragandad.basicnavigationcompose.feature.foryou.forYouSection
 import com.putragandad.basicnavigationcompose.screens.auth.login.LoginScreen
 import com.putragandad.basicnavigationcompose.screens.auth.register.RegisterScreen
-import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.ForYouScreen
-import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.viewmodel.ForYouViewModel
 import com.putragandad.basicnavigationcompose.screens.toplevel.library.LibraryScreen
 import com.putragandad.basicnavigationcompose.screens.toplevel.search.SearchScreen
 import kotlinx.serialization.Serializable
@@ -27,24 +27,13 @@ fun AppNavHost(
         rootNavController,
         startDestination = ForYouGraph // and then set it here
     ) {
-        navigation<ForYouGraph>(startDestination = ForYouRoute) {
-            composable<ForYouRoute> { backStackEntry ->
-                // create viewmodel for this current backstackentry
-                val viewModel = hiltViewModel<ForYouViewModel>()
-                ForYouScreen(
-                    modifier = modifier,
-                    viewModel = viewModel,
-                    onTourismPlaceItemClick = { id ->
-                        rootNavController.navigate(
-                            route = DetailPlaceRoute(id)
-                        )
-                    }
-                )
+        forYouSection(
+            modifier = modifier,
+            onTourismPlaceItemClick = { id ->
+                // navigate to detail page
             }
-
-            composable<DetailPlaceRoute> { backStackEntry ->
-
-            }
+        ) {
+            // describe detail page here
         }
 
         navigation<SearchGraph>(startDestination = SearchRoute) {

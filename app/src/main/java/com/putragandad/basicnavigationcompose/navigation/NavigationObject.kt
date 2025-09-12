@@ -1,6 +1,5 @@
 package com.putragandad.basicnavigationcompose.navigation
 
-import com.putragandad.basicnavigationcompose.screens.model.TourismListItem
 import kotlinx.serialization.Serializable
 
 // serializable used for Type-safe navigation
@@ -14,12 +13,12 @@ import kotlinx.serialization.Serializable
 
 // serializable for Main Top Level Destination nested graph
 // each graph represent nested graph
-@Serializable data object ForYouGraph
+//@Serializable data object ForYouGraph
 @Serializable data object SearchGraph
 @Serializable data object LibraryGraph
 
 // serializable for Route(child) inside nested Top Level Destination graph
-@Serializable data object ForYouRoute
+//@Serializable data object ForYouRoute
 @Serializable data object SearchRoute
 @Serializable data object LibraryRoute
 @Serializable data class DetailPlaceRoute(val id: String)

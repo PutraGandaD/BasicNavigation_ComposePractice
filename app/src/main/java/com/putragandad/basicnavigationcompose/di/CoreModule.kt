@@ -1,7 +1,6 @@
 package com.putragandad.basicnavigationcompose.di
 
-import com.putragandad.basicnavigationcompose.data.source.remote.RemoteDataSource
-import com.putragandad.basicnavigationcompose.data.source.remote.network.ApiService
+import com.putragandad.basicnavigationcompose.core.data.source.remote.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
