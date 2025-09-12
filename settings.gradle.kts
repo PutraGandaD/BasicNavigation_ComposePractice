@@ -21,4 +21,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "BasicNavigationCompose"
 include(":app")
- 
+include(":core")
+include(":feature")
+include(":feature:foryou")
+include(":feature:search")
+include(":feature:library")
+include(":core:data")
+include(":core:ui")
