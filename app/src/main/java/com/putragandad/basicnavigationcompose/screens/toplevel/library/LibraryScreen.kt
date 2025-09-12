@@ -54,6 +54,8 @@ import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeThe
 
 @Composable
 fun LibraryScreen(modifier: Modifier = Modifier) {
+    val passwordVisibility = rememberSaveable { mutableStateOf(false) }
+
     LoginScreen(
         modifier = modifier,
         onLoginClick = {},
@@ -61,7 +63,7 @@ fun LibraryScreen(modifier: Modifier = Modifier) {
         onAppleLoginClick = {},
         onSignUpClick = {},
         onForgetPasswordClick = {},
-        pwdVisibility = rememberSaveable { mutableStateOf(false) }
+        pwdVisibility = passwordVisibility
     )
 }
 
