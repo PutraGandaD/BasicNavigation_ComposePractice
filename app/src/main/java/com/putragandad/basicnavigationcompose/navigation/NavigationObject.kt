@@ -1,5 +1,6 @@
 package com.putragandad.basicnavigationcompose.navigation
 
+import com.putragandad.basicnavigationcompose.screens.model.TourismListItem
 import kotlinx.serialization.Serializable
 
 // serializable used for Type-safe navigation
@@ -21,3 +22,4 @@ import kotlinx.serialization.Serializable
 @Serializable data object ForYouRoute
 @Serializable data object SearchRoute
 @Serializable data object LibraryRoute
+@Serializable data class DetailPlaceRoute(val id: String)

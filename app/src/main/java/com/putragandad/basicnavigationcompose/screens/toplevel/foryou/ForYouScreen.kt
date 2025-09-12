@@ -38,6 +38,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.putragandad.basicnavigationcompose.R
 import com.putragandad.basicnavigationcompose.screens.model.TourismListItem
+import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.state.ForYouUiState
+import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.viewmodel.ForYouViewModel
 import com.putragandad.basicnavigationcompose.ui.component.SearchList
 import com.putragandad.basicnavigationcompose.ui.theme.BasicNavigationComposeTheme
 import com.putragandad.basicnavigationcompose.ui.theme.PureWhite
@@ -47,20 +49,23 @@ import com.putragandad.basicnavigationcompose.utils.DummyList
 @Composable
 fun ForYouScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForYouViewModel = viewModel()
+    viewModel: ForYouViewModel = viewModel(),
+    onTourismPlaceItemClick : (String) -> Unit
 ) {
     val uiState : ForYouUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ForYouScreen(
         modifier = modifier,
-        uiState = uiState
+        uiState = uiState,
+        onTourismPlaceItemClick = onTourismPlaceItemClick
     )
 }
 
 @Composable
 fun ForYouScreen(
     modifier: Modifier = Modifier,
-    uiState: ForYouUiState
+    uiState: ForYouUiState,
+    onTourismPlaceItemClick : (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -74,7 +79,10 @@ fun ForYouScreen(
 
             is ForYouUiState.Success -> {
                 uiState.data?.let { tourismPlace ->
-                    TourismPlaceList(tourismPlace)
+                    TourismPlaceList(
+                        list = tourismPlace,
+                        onItemClick = onTourismPlaceItemClick
+                    )
                 }
             }
 
@@ -87,7 +95,8 @@ fun ForYouScreen(
 
 @Composable
 fun TourismPlaceList(
-    list: List<TourismListItem>
+    list: List<TourismListItem>,
+    onItemClick : (String) -> Unit
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -100,10 +109,13 @@ fun TourismPlaceList(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun SecondScreenPreview() {
     BasicNavigationComposeTheme {
-        ForYouScreen()
+        ForYouScreen(
+            uiState = ForYouUiState.Success(emptyList()),
+            onTourismPlaceItemClick = {}
+        )
     }
 }

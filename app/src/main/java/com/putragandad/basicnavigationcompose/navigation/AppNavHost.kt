@@ -7,10 +7,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.putragandad.basicnavigationcompose.screens.auth.login.LoginScreen
 import com.putragandad.basicnavigationcompose.screens.auth.register.RegisterScreen
 import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.ForYouScreen
-import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.ForYouViewModel
+import com.putragandad.basicnavigationcompose.screens.toplevel.foryou.viewmodel.ForYouViewModel
 import com.putragandad.basicnavigationcompose.screens.toplevel.library.LibraryScreen
 import com.putragandad.basicnavigationcompose.screens.toplevel.search.SearchScreen
 import kotlinx.serialization.Serializable
@@ -32,8 +33,17 @@ fun AppNavHost(
                 val viewModel = hiltViewModel<ForYouViewModel>()
                 ForYouScreen(
                     modifier = modifier,
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    onTourismPlaceItemClick = { id ->
+                        rootNavController.navigate(
+                            route = DetailPlaceRoute(id)
+                        )
+                    }
                 )
+            }
+
+            composable<DetailPlaceRoute> { backStackEntry ->
+
             }
         }
 

@@ -1,4 +1,4 @@
-package com.putragandad.basicnavigationcompose.screens.toplevel.foryou
+package com.putragandad.basicnavigationcompose.screens.toplevel.foryou.state
 
 import com.putragandad.basicnavigationcompose.screens.model.TourismListItem
 
