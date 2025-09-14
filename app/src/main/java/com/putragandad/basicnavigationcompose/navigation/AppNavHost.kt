@@ -8,6 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.putragandad.basicnavigationcompose.feature.detailpage.DetailPageRoute
+import com.putragandad.basicnavigationcompose.feature.detailpage.DetailPageScreen
+import com.putragandad.basicnavigationcompose.feature.detailpage.DetailPageViewModel
+import com.putragandad.basicnavigationcompose.feature.detailpage.detailPageFeature
 import com.putragandad.basicnavigationcompose.feature.foryou.ForYouGraph
 import com.putragandad.basicnavigationcompose.feature.foryou.forYouSection
 import com.putragandad.basicnavigationcompose.screens.auth.login.LoginScreen
@@ -30,10 +34,12 @@ fun AppNavHost(
         forYouSection(
             modifier = modifier,
             onTourismPlaceItemClick = { id ->
-                // navigate to detail page
+                rootNavController.navigate(
+                    route = DetailPageRoute(id = id)
+                )
             }
         ) {
-            // describe detail page here
+            detailPageFeature(modifier)
         }
 
         navigation<SearchGraph>(startDestination = SearchRoute) {

@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":core:utils"))
 
     implementation(project(":feature:foryou"))
+    implementation(project(":feature:detailpage"))
     implementation(project(":feature:search"))
     implementation(project(":feature:library"))
 

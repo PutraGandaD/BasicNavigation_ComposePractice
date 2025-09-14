@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.putragandad.basicnavigationcompose.core.data.model.TourismListItem
+import com.putragandad.basicnavigationcompose.core.ui.component.TourismPlaceCard
 import com.putragandad.basicnavigationcompose.core.ui.theme.BasicNavigationComposeTheme
 
 // composable screen for bottom nav bar screen
@@ -22,7 +23,7 @@ import com.putragandad.basicnavigationcompose.core.ui.theme.BasicNavigationCompo
 fun ForYouScreen(
     modifier: Modifier = Modifier,
     viewModel: ForYouViewModel = viewModel(),
-    onTourismPlaceItemClick : (String) -> Unit
+    onTourismPlaceItemClick : (Int) -> Unit
 ) {
     val uiState : ForYouUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -37,7 +38,7 @@ fun ForYouScreen(
 fun ForYouScreen(
     modifier: Modifier = Modifier,
     uiState: ForYouUiState,
-    onTourismPlaceItemClick : (String) -> Unit
+    onTourismPlaceItemClick : (Int) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -68,14 +69,14 @@ fun ForYouScreen(
 @Composable
 fun TourismPlaceList(
     list: List<TourismListItem>,
-    onItemClick : (String) -> Unit
+    onItemClick : (Int) -> Unit
 ) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
+    LazyColumn() {
         items(list, key = { it.id }) { item ->
-            Text(
-                item.name
+            TourismPlaceCard(
+                idPlace = item.id,
+                placeName = item.name,
+                onTourismPlaceClick = onItemClick // handle the onItemClick on the card
             )
         }
     }

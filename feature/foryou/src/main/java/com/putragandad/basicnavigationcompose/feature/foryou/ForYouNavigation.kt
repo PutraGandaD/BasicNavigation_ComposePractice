@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 
 fun NavGraphBuilder.forYouSection(
     modifier: Modifier = Modifier,
-    onTourismPlaceItemClick: (String) -> Unit,
+    onTourismPlaceItemClick: (Int) -> Unit,
     detailPageScreenDestination: NavGraphBuilder.() -> Unit // for composable function connecting to detail page in different module
 ) {
     navigation<ForYouGraph>(startDestination = ForYouRoute) {
