@@ -5,9 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
@@ -25,6 +29,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -77,7 +83,7 @@ fun MyApp(
         bottomBar = {
             if(showBottomBar) {
                 AnimatedVisibility(visible) {
-                    NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                    NavigationBar() {
                         topLevelNavigationGraph.forEach { topLevelScreen ->
                             val isSelected =
                                 currentDestination?.hierarchy?.any { it.hasRoute(topLevelScreen.route::class) } == true
@@ -115,7 +121,8 @@ fun MyApp(
         // AppNavHost is our app navigation host, which host all route for our app, including bottom navigation bar
         AppNavHost(
             rootNavController = rootNavController,
-            modifier = Modifier.padding(contentPadding)
+            modifier = Modifier
+                .padding(contentPadding)
         )
     }
 }
@@ -124,6 +131,7 @@ fun MyApp(
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
 
         setContent {
@@ -137,6 +145,8 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
+
+        window.isNavigationBarContrastEnforced = false
     }
 }
 
